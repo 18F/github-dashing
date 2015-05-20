@@ -1,8 +1,9 @@
 source 'https://rubygems.org'
+ruby '2.2.2'
 
 gem 'rake'
 gem 'dashing'
-gem 'json', '~> 1.7.7'
+gem 'json'
 gem 'dotenv'
 gem 'octokit'
 gem 'i18n'
