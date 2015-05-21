@@ -59,7 +59,7 @@ h2 .value-add {
 		}
 
 		&.widget-graph .y_ticks {
-			fill: rgba(255,255,255,0.5);	
+			fill: rgba(255,255,255,0.5);
 		}
 
 	}
@@ -73,7 +73,7 @@ h2 .value-add {
 			position: inherit;
 			top: auto;
 			bottom: auto;
-		}	
+		}
 	}
 
 	&.widget-table {
@@ -85,7 +85,7 @@ h2 .value-add {
 				color: $red;
 			}
 		}
-		
+
 	}
 
 	&.leaderboard {
@@ -241,8 +241,8 @@ h2 .value-add {
 			li {
 				font-size: 11px;
 				border-radius: 3px;
-				margin: 0 5px 0 0;	
-				padding: 0;	
+				margin: 0 5px 0 0;
+				padding: 0;
 			}
 		}
 	}
@@ -258,7 +258,7 @@ h2 .value-add {
 	}
 }
 
-h1, footer {
+h1 {
 	margin: 5px; // simulate widget spacing
 	padding: 5px;
 	text-align: center;
@@ -267,7 +267,9 @@ h1, footer {
 footer {
 	color: rgba(255, 255, 255, 0.5);
 	font-size: 12px;
+	margin: 5px;
 	padding: 15px;
+	text-align: left;
 
 	a {
 		color: rgba(255, 255, 255, 0.7);

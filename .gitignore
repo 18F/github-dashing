@@ -2,3 +2,4 @@
 .env
 !.env.sample
 tmp
+history.yml
