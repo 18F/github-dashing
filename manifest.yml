@@ -1,0 +1,7 @@
+---
+applications:
+- name: project-dashboard
+  env:
+    ORGAS: 18F
+    SINCE: 6.months.ago.beginning_of_month
+    GITHUB_LOGIN: monfresh
