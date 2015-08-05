@@ -88,46 +88,6 @@ h2 .value-add {
 
 	}
 
-	&.leaderboard {
-		vertical-align: top;
-
-		table td {
-			border-bottom: 1px solid #666;
-			padding: 4px;
-			font-size: 14px;
-		}
-
-		.col-icon {
-			text-align: right;
-		}
-
-		.col-name {
-			text-align: left;
-			max-width: 150px;
-		}
-
-		.col-name, .col-score {
-			color: white;
-		}
-
-		.col-score, .col-trend {
-			text-align: left;
-		}
-		.previous-score {
-			font-size: 0.7em;
-			opacity: 0.5;
-		}
-		.col-trend {
-			opacity: 0.5;
-			font-size: 0.7em;
-		}
-		.col-name {
-			text-overflow: ellipsis;
-			white-space: nowrap;
-			overflow: hidden;
-		}
-	}
-
 	&.meta_stats {
 		background-color: transparent;
 		color: #777;
