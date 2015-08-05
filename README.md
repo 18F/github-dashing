@@ -6,7 +6,6 @@ Dashboard to monitor the health of github projects based on their contribution s
 
  - Aggregates usage data across multiple repos from the Github API
  - Widgets support aggregate statistics of multiple repos or even all repos within an organization.
- - A leaderboard aggregates a score for the last 30 days on each contributor.
  - Contributor scores based on activity in commits as well as in comments and pull requests.
  - [Travis CI](http://travis-ci.org) build status across multiple branches
  - [Scrutinizer CI](https://scrutinizer-ci.com/) code quality metrics
@@ -19,12 +18,9 @@ relative measures over long-term data. For example, the leaderboard only inspect
 of contributions, allowing new contributors to get to the top more easily.
 
 Preview: The [SilverStripe CMS](http://silverstripe.org) project, aggregating over 50 repositories
-that the project either maintains or actively contributes to. 
+that the project either maintains or actively contributes to.
 View it live at [github-dashing.herokuapp.com](http://github-dashing.herokuapp.com/default).
 ![Preview](assets/images/preview.png?raw=true)
-
-Preview: Leaderboard with detailed scoring (on hover)
-![Preview](assets/images/preview_leaderboard.png?raw=true)
 
 Preview: Pull request stats with trend projection for current month
 ![Preview](assets/images/preview_stats.png?raw=true)
@@ -33,7 +29,7 @@ Preview: Travis build status with per-branch status and code quality indicators
 ![Preview](assets/images/preview_travis.png?raw=true)
 
 The dashboard is based on [Dashing](http://shopify.github.com/dashing), a Ruby web application
-built on the [Sinatra](http://www.sinatrarb.com) framework. It uses the Github API rather than 
+built on the [Sinatra](http://www.sinatrarb.com) framework. It uses the Github API rather than
 [githubarchive.org](http://githubarchive.org) data dumps because of the immediate nature
 of dashboard update (refreshes every hour by default). The code used to be based
 on Google BigQuery aggregation, but this turned out to be infeasible due to query size and BigQuery pricing.
@@ -51,17 +47,11 @@ All configuration is optional, apart from either `ORGAS` or `REPOS`.
  * `ORGAS`: Github organizations. Separate multiple by comma. Will use all repos for an organization.
    Example: `silverstripe,silverstripe-labs`.
  * `REPOS`: Github repository identifiers. Separate multiple by comma. If used alongside `ORGAS`, the logic will add
-   all mentioned repos to the ones retrieved from `ORGAS`. 
+   all mentioned repos to the ones retrieved from `ORGAS`.
    Example: `silverstripe/silverstripe-framework,silverstripe/silverstripe-cms`
  * `SINCE`: Date string, or relative time parsed through [http://guides.rubyonrails.org/active_support_core_extensions.html](ActiveSupport). Example: `12.months.ago.beginning_of_month`, `2012-01-01`
  * `GITHUB_LOGIN`: Github authentication is optional, but recommended
  * `GITHUB_OAUTH_TOKEN`: See above
- * `LEADERBOARD_WEIGHTING`: Comma-separated weighting pairs influencing the multiplication of values
-   used for the leaderboard widget score. Set the `*_max` values to `0` in order to remove the scoring.
-   Example: `commits_additions_max=200,commits_additions_loc_threshold=1000,commits_deletions_max=100,commits_deletions_loc_threshold=1000`
- * `LEADERBOARD_EDITS_WEIGHTING`: Comma-separated weighting pairs influencing the leaderboard widget scores based on lines of code added and deleted. The `max` and `threshold` values ensure the scores stay in reasonable bounds, and don't bias massive edits or additions of third party libraries to the codebase over other metrics. Metrics are collected from the "default branch" in Github only.
-   Example: `issues_opened=5,issues_closed=5,pull_requests_opened=10,pull_requests_closed=5,pull_request_comments=1,issue_comments=1,commit_comments=1,commits=20`
- * `LEADERBOARD_SKIP_ORGA_MEMBERS`: Exclude organization members from leaderboard. Useful to track "external" contributions. Comma-separated list oforganization names.
  * `TRAVIS_BRANCH_BLACKLIST`: A blacklist of branches ignored by repo, as a JSON string.
    This is useful to ignore old branches which no longer have active builds.
    Example: `{"silverstripe-labs/silverstripe-newsletter":["0.3","0.4"]}`
@@ -105,12 +95,12 @@ Now you can browse the dashboard at `http://localhost:3030/default`.
 
 ## Tasks
 
-The Dashing jobs query for their data whenever the server is started, and then with a frequency of 1h by default. 
+The Dashing jobs query for their data whenever the server is started, and then with a frequency of 1h by default.
 
 ## Heroku Deployment
 
-Since Dashing is simply a Sinatra Rack app under the hood, deploying is a breeze. 
-It takes around 30 seconds to do :) 
+Since Dashing is simply a Sinatra Rack app under the hood, deploying is a breeze.
+It takes around 30 seconds to do :)
 
 First, [sign up](https://id.heroku.com/signup) for the free service.
 [Download](https://devcenter.heroku.com/articles/quickstart) the dev tools
@@ -125,7 +115,7 @@ Now you're ready to add your app to Heroku:
 	git add .
 	git commit -m "My beautiful dashboard"
 
-	# Create the application on Heroku 
+	# Create the application on Heroku
 	heroku apps:create myapp
 
 	# Push the application to Heroku
