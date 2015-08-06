@@ -4,6 +4,8 @@ AllCops:
     - 'Rakefile'
     - 'lib/tasks/*'
     - "**/*.rake"
+  Exclude:
+    - 'jobs/travis.rb'
 
 Lint/ParenthesesAsGroupedExpression:
   Description: Checks for method calls with a space before the opening parenthesis.
