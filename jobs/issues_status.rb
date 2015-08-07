@@ -9,10 +9,10 @@ SCHEDULER.every '1h', :first_in => '1s' do |job|
 	backend = GithubBackend.new()
 	opened_series = [[],[]]
 	closed_series = [[],[]]
-	issues_by_period = backend.issue_count_by_status(
-		:orgas=>(ENV['ORGAS'].split(',') if ENV['ORGAS']), 
-		:repos=>(ENV['REPOS'].split(',') if ENV['REPOS']),
-		:since=>ENV['SINCE']
+  issues_by_period = backend.issue_count_by_status(
+    orgs: (ENV['ORGS'].split(',') if ENV['ORGS']),
+    repos: (ENV['REPOS'].split(',') if ENV['REPOS']),
+    since: ENV['SINCE']
 	).group_by_month(ENV['SINCE'].to_datetime)
 	issues_by_period.each_with_index do |(period,issues),i|
 		timestamp = Time.strptime(period, '%Y-%m').to_i
@@ -39,7 +39,7 @@ SCHEDULER.every '1h', :first_in => '1s' do |job|
 			y: (i == issues_by_period.count-1) ? GithubDashing::Helper.extrapolate_to_month(closed_count)-opened_count : 0
 		}
 	end
-	
+
 	opened = opened_series[0][-1][:y] rescue 0
 	closed = closed_series[0][-1][:y] rescue 0
 	opened_prev = opened_series[0][-2][:y] rescue 0

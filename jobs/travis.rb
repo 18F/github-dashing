@@ -20,9 +20,9 @@ SCHEDULER.every '2m', :first_in => '1s' do |job|
 	# TODO Move to configuration
 	repo_slug_replacements = [/(silverstripe-australia\/|silverstripe-labs\/|silverstripe\/|silverstripe-)/,'']
 
-	if ENV['ORGAS']
-		ENV['ORGAS'].split(',').each do |orga|
-			repo_slugs = repo_slugs.concat(travis_backend.get_repos_by_orga(orga).collect{|repo|repo['slug']})
+	if ENV['ORGS']
+		ENV['ORGS'].split(',').each do |org|
+			repo_slugs = repo_slugs.concat(travis_backend.get_repos_by_org(org).collect{|repo|repo['slug']})
 		end
 	end
 

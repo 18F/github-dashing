@@ -53,7 +53,7 @@ class GithubBackend
 				Raven.capture_exception(exception)
 			end
 		end
-		
+
 		return events
 	end
 
@@ -75,7 +75,7 @@ class GithubBackend
 				Raven.capture_exception(exception)
 			end
 		end
-		
+
 		return events
 	end
 
@@ -98,7 +98,7 @@ class GithubBackend
 				Raven.capture_exception(exception)
 			end
 		end
-		
+
 		return events
 	end
 
@@ -147,7 +147,7 @@ class GithubBackend
 				Raven.capture_exception(exception)
 			end
 		end
-		
+
 		return events
 	end
 
@@ -158,7 +158,7 @@ class GithubBackend
 		self.get_repos(opts).each do |repo|
 			begin
 				issues = request('issues', [repo, {:since => opts.since,:state => 'all'}])
-				
+
 				# Filter to issues in the specified timeframe
 				issues.select! do|issue|
 					date_at = (issue.state == 'open') ? 'created_at' : 'closed_at'
@@ -187,9 +187,9 @@ class GithubBackend
 		return events
 	end
 
-	# TODO Break up by actual status, currently not looking at closed_at date
-	# 
-	# Returns EventCollection
+  # TODO Break up by actual status, currently not looking at closed_at date
+  #
+  # Returns EventCollection
 	def pull_count_by_status(opts)
 		opts = OpenStruct.new(opts) unless opts.kind_of? OpenStruct
 		events = GithubDashing::EventCollection.new
@@ -210,7 +210,7 @@ class GithubBackend
 				Raven.capture_exception(exception)
 			end
 		end
-		
+
 		return events
 	end
 
@@ -232,10 +232,10 @@ class GithubBackend
 		if opts.repos != nil
 			repos = repos.concat(opts.repos)
 		end
-		if opts.orgas != nil
-			opts.orgas.each do |orga|
+		if !opts.orgs.nil?
+		  opts.orgs.each do |org|
 				begin
-					repos = repos.concat(request('org_repos', [orga, {:type => 'owner'}]).map {|repo|repo.full_name.dup})
+					repos = repos.concat(request('org_repos', [org, {:type => 'owner'}]).map {|repo|repo.full_name.dup})
 				rescue Octokit::Error => exception
 					Raven.capture_exception(exception)
 				end

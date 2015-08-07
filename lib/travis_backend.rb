@@ -13,11 +13,11 @@ class TravisBackend
 		@logger.level = Logger::DEBUG unless ENV['RACK_ENV'] == 'production'
 		@api_base = 'https://api.travis-ci.org/'
 	end
-	
+
 	# Returns all repositories for a given organization
-	def get_repos_by_orga(orga) 
-		return self.fetch("repos?owner_name=#{orga}")
-	end
+  def get_repos_by_org(org)
+    return self.fetch("repos?owner_name=#{org}")
+  end
 
 	# repo (string) Fully qualified name, incl. owner
 	# Returns a single repository as a Hash

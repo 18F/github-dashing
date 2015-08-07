@@ -7,11 +7,11 @@ require File.expand_path('../../lib/helper', __FILE__)
 SCHEDULER.every '1h', :first_in => '1s' do |job|
 	backend = GithubBackend.new()
 	series = [[],[]]
-	pulls_by_period = backend.pull_count_by_status(
-		:period=>'month', 
-		:orgas=>(ENV['ORGAS'].split(',') if ENV['ORGAS']), 
-		:repos=>(ENV['REPOS'].split(',') if ENV['REPOS']),
-		:since=>ENV['SINCE'],
+  pulls_by_period = backend.pull_count_by_status(
+    period: 'month',
+    orgs: (ENV['ORGS'].split(',') if ENV['ORGS']),
+    repos: (ENV['REPOS'].split(',') if ENV['REPOS']),
+    since: ENV['SINCE'],
 	).group_by_month(ENV['SINCE'].to_datetime)
 	pulls_by_period.each_with_index do |(period,pulls),i|
 		timestamp = Time.strptime(period, '%Y-%m').to_i
@@ -31,14 +31,14 @@ SCHEDULER.every '1h', :first_in => '1s' do |job|
 	trend = GithubDashing::Helper.trend_percentage_by_month(prev, current)
 	trend_class = GithubDashing::Helper.trend_class(trend)
 
-	send_event(
-		'pull_requests', 
-		{
-			series: series, # Prepare for showing open/closed stacked
-			displayedValue: current,
-			difference: trend,
-			trend_class: trend_class,
-			arrow: 'icon-arrow-' + trend_class
-		}
-	)
+  send_event(
+    'pull_requests',
+  	{
+  		series: series, # Prepare for showing open/closed stacked
+  		displayedValue: current,
+  		difference: trend,
+  		trend_class: trend_class,
+  		arrow: 'icon-arrow-' + trend_class
+  	}
+  )
 end
