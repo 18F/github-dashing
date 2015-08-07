@@ -4,46 +4,44 @@ require 'faraday'
 require 'logger'
 
 class TravisBackend
+  attr_accessor :client, :logger, :api_base
 
-	attr_accessor :client, :logger, :api_base
-
-	def initialize
-		# TODO Init HTTP client
-		@logger = Logger.new(STDOUT)
-		@logger.level = Logger::DEBUG unless ENV['RACK_ENV'] == 'production'
-		@api_base = 'https://api.travis-ci.org/'
-	end
-
-	# Returns all repositories for a given organization
-  def get_repos_by_org(org)
-    return self.fetch("repos?owner_name=#{org}")
+  def initialize
+    # TODO: Init HTTP client
+    @logger = Logger.new(STDOUT)
+    @logger.level = Logger::DEBUG unless ENV['RACK_ENV'] == 'production'
+    @api_base = 'https://api.travis-ci.org/'
   end
 
-	# repo (string) Fully qualified name, incl. owner
-	# Returns a single repository as a Hash
-	def get_repo(repo)
-		return self.fetch("repos/#{repo}")
-	end
+  # Returns all repositories for a given organization
+  def get_repos_by_org(org)
+    fetch("repos?owner_name=#{org}")
+  end
 
-	# repo (string) Fully qualified name, incl. owner
-	# Returns a single repository as a Hash
-	def get_builds_by_repo(repo)
-		return self.fetch("repos/#{repo}/builds")
-	end
+  # repo (string) Fully qualified name, incl. owner
+  # Returns a single repository as a Hash
+  def get_repo(repo)
+    fetch("repos/#{repo}")
+  end
 
-	def get_branches_by_repo(repo)
-		return self.fetch("repos/#{repo}/branches")
-	end
+  # repo (string) Fully qualified name, incl. owner
+  # Returns a single repository as a Hash
+  def get_builds_by_repo(repo)
+    fetch("repos/#{repo}/builds")
+  end
 
-	# Returns a Hash
-	def fetch(path)
-		@logger.debug 'Fetching %s%s' % [@api_base,path]
+  def get_branches_by_repo(repo)
+    fetch("repos/#{repo}/branches")
+  end
 
-		conn = Faraday.new @api_base, :ssl => {:verify => false}
-		response = conn.get path
+  # Returns a Hash
+  def fetch(path)
+    @logger.debug format('Fetching %s%s', @api_base, path)
 
-		# TODO Better error handling
-		return response.status == 200 ? JSON.parse(response.body) : false
-	end
+    conn = Faraday.new @api_base, ssl: { verify: false }
+    response = conn.get path
 
+    # TODO: Better error handling
+    response.status == 200 ? JSON.parse(response.body) : false
+  end
 end
