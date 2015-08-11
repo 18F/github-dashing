@@ -5,3 +5,4 @@ applications:
     ORGS: 18F
     SINCE: 6.months.ago.beginning_of_month
     GITHUB_LOGIN: monfresh
+    TRAVIS_IGNORED_REPOS: 18F/save-ferris

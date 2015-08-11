@@ -13,25 +13,15 @@ class TravisBackend
     @api_base = 'https://api.travis-ci.org/'
   end
 
-  # Returns all repositories for a given organization
-  def get_repos_by_org(org)
-    fetch("repos?owner_name=#{org}")
+  # Returns all repositories that have Travis builds for a given organization
+  def get_enabled_repos_by_org(org)
+    fetch("repos?owner_name=#{org}").select { |repo| !repo['last_build_id'].nil? }
   end
 
   # repo (string) Fully qualified name, incl. owner
   # Returns a single repository as a Hash
   def get_repo(repo)
     fetch("repos/#{repo}")
-  end
-
-  # repo (string) Fully qualified name, incl. owner
-  # Returns a single repository as a Hash
-  def get_builds_by_repo(repo)
-    fetch("repos/#{repo}/builds")
-  end
-
-  def get_branches_by_repo(repo)
-    fetch("repos/#{repo}/branches")
   end
 
   # Returns a Hash
