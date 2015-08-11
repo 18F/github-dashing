@@ -37,19 +37,20 @@ $text-danger-color: #fff;
 // ----------------------------------------------------------------------------
 html {
   font-size: 100%;
-  -webkit-text-size-adjust: 100%;
   -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
-  margin: 0;
   background-color: $background-color;
-  font-size: 20px;
   color: $text-color;
   font-family: 'Open Sans', "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 20px;
+  margin: 0;
 }
 
-b, strong {
+b,
+strong {
   font-weight: bold;
 }
 
@@ -64,7 +65,8 @@ img {
   vertical-align: middle;
 }
 
-img, object {
+img,
+object {
   max-width: 100%;
 }
 
@@ -82,15 +84,22 @@ td {
   vertical-align: middle;
 }
 
-ul, ol {
+ul,
+ol {
+  margin: 0;
+  padding: 0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+p {
   padding: 0;
   margin: 0;
 }
 
-h1, h2, h3, h4, h5, p {
-  padding: 0;
-  margin: 0;
-}
 h1 {
   margin-bottom: 12px;
   text-align: center;
