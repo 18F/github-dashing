@@ -19,10 +19,7 @@ class GithubBackend
   def testable_repos
     projects = JSON.parse(Faraday.get('https://team-api.18f.gov/public/api/projects/').body)
 
-    projects.keys.inject([]) do |result, key|
-      result << projects[key]['github'].first if projects[key]['testable'] == true
-      result
-    end
+    projects.values.select { |p| p['testable'] }.map { |p| p['github'].first }
   end
 
   # Returns EventCollection

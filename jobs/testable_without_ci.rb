@@ -1,6 +1,12 @@
 require 'dashing'
 require File.expand_path('../../lib/travis_backend', __FILE__)
 
+# This job uses the 18F Team API to fetch all repos whose `testable`
+# key is set to `true` in their .about.yml. Then, the Travis API is
+# used to get each repo in that list, and if the repo doesn't have a
+# build running on Travis, it gets included in the widget on the dashboard.
+# The goal is to display repos that should have tests running on some CI
+# server, but don't.
 SCHEDULER.every '1d', first_in: '1s' do |_job|
   travis_backend = TravisBackend.new
   github_backend = GithubBackend.new
@@ -23,5 +29,5 @@ SCHEDULER.every '1d', first_in: '1s' do |_job|
 
   items.sort_by! { |item| [1, item['label']] }
 
-  send_event('testable', unordered: true, items: items)
+  send_event('testable_without_ci', unordered: true, items: items)
 end

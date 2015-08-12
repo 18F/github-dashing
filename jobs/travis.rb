@@ -2,9 +2,7 @@ require 'dashing'
 require File.expand_path('../../lib/travis_backend', __FILE__)
 
 def class_from(build_status)
-  return 'bad' if build_status.nil? || build_status == 1
-
-  'good'
+  (build_status.nil? || build_status == 1) ? 'bad' : 'good'
 end
 
 SCHEDULER.every '2m', first_in: '1s' do |_job|

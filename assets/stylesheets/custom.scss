@@ -102,10 +102,10 @@ h2 .value-add {
     background-color: transparent;
     color: $grey;
   }
-  // scss-lint:enable SelectorFormat
 
   &.travis,
-  &.testable {
+  &.testable_without_ci {
+  // scss-lint:enable SelectorFormat
     font-size: 14px;
 
     ul {

@@ -15,7 +15,7 @@ class TravisBackend
 
   # Returns all repositories that have Travis builds for a given organization
   def get_enabled_repos_by_org(org)
-    fetch("repos?owner_name=#{org}").select { |repo| !repo['last_build_id'].nil? }
+    fetch("repos?owner_name=#{org}").reject { |repo| repo['last_build_id'].nil? }
   end
 
   # repo (string) Fully qualified name, incl. owner
