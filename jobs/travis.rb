@@ -1,107 +1,42 @@
-require 'json'
-require 'time'
 require 'dashing'
-require 'net/https'
-require 'cgi'
 require File.expand_path('../../lib/travis_backend', __FILE__)
 
-$lastTravisItems = []
+def class_from(build_status)
+  (build_status.nil? || build_status == 1) ? 'bad' : 'good'
+end
 
-SCHEDULER.every '2m', :first_in => '1s' do |job|
-	travis_backend = TravisBackend.new
-	repo_slugs = []
-	builds = []
+SCHEDULER.every '2m', first_in: '1s' do |_job|
+  travis_backend = TravisBackend.new
+  enabled_repos = []
+  ignored_repos = ENV['TRAVIS_IGNORED_REPOS'].split(',').compact
 
-	# Only look at release branches (x.y) and master, not at tags (x.y.z)
-	branch_whitelist = /^(\d+\.\d+$|master)/
-	branch_blacklist_by_repo = {}
-	branch_blacklist_by_repo = JSON.parse(ENV['TRAVIS_BRANCH_BLACKLIST']) if ENV['TRAVIS_BRANCH_BLACKLIST']
+  if ENV['ORGS']
+    ENV['ORGS'].split(',').each do |org|
+      enabled_repos = travis_backend.get_enabled_repos_by_org(org)
+    end
+  end
 
-	# TODO Move to configuration
-	repo_slug_replacements = [/(silverstripe-australia\/|silverstripe-labs\/|silverstripe\/|silverstripe-)/,'']
+  items = enabled_repos.map do |repo|
+    {
+      'class' => class_from(repo['last_build_status']),
+      'label' => repo['slug'],
+      'title' => repo['last_build_finished_at'],
+      'url' => "https://travis-ci.org/#{repo['slug']}/builds/#{repo['last_build_id']}"
+    }
+  end
 
-	if ENV['ORGS']
-		ENV['ORGS'].split(',').each do |org|
-			repo_slugs = repo_slugs.concat(travis_backend.get_repos_by_org(org).collect{|repo|repo['slug']})
-		end
-	end
+  items.delete_if { |item| ignored_repos.include?(item['label']) }
 
-	if ENV['REPOS']
-		repo_slugs.concat(ENV['REPOS'].split(','))
-	end
+  # Sort by name, then by status
+  items.sort_by! do |item|
+    if item['class'] == 'bad'
+      [1, item['label']]
+    elsif item['class'] == 'good'
+      [2, item['label']]
+    else
+      [3, item['label']]
+    end
+  end
 
-	repo_slugs.sort!
-
-	items = repo_slugs.map do |repo_slug|
-		label = repo_slug
-		label = repo_slug.gsub(repo_slug_replacements[0],repo_slug_replacements[1]) if repo_slug_replacements
-		item = {
-			'label' => label,
-			'class' => 'none',
-			'url' => '',
-			'items' => [],
-		}
-
-		# Travis info
-		repo_branches = travis_backend.get_branches_by_repo(repo_slug)
-
-		if repo_branches and repo_branches['branches'].length > 0
-			# Latest builds are listed under "branches", but their corresponding branch name
-			# is stored through the "commits" association
-			items = repo_branches['branches']
-				.select do |branch|
-					commit = repo_branches['commits'].find{|commit|commit['id'] == branch['commit_id']}
-					branch_name = commit['branch']
-
-					# Ignore branches not in whitelist
-					if not branch_whitelist.match(branch_name)
-						false
-					# Ignore branches specifically blacklisted
-					elsif branch_blacklist_by_repo.has_key?(repo_slug) and branch_blacklist_by_repo[repo_slug].include?(branch_name)
-						false
-					else
-						true
-					end
-				end
-				.map do |branch|
-					commit = repo_branches['commits'].find{|commit|commit['id'] == branch['commit_id']}
-					branch_name = commit['branch']
-					{
-						'class'=>(["passed","started","created"].include?(branch['state'])) ? 'good' : 'bad', # POSIX return code
-						'label'=>branch_name,
-						'title'=>branch['finished_at'],
-						'result'=>branch['state'],
-						'url'=> 'https://travis-ci.org/%s/builds/%d' % [repo_slug,branch['id']]
-					}
-				end
-
-			item['class'] = (items.find{|b|b["class"] == 'bad'}) ? 'bad' : 'good'
-			item['url'] = items.count ? 'https://travis-ci.org/%s' % repo_slug : ''
-			# Only show items if some are failing
-			item['items'] = (items.find{|b|b["class"] == 'bad'}) ? items : []
-		end
-
-		item
-	end
-
-	# Sort by name, then by status
-	items.sort_by! do|item|
-		if item['class'] == 'bad'
-			[1,item['label']]
-		elsif item['class'] == 'good'
-			[2,item['label']]
-		else
-			[3,item['label']]
-		end
-	end
-
-	if items != $lastTravisItems
-		send_event('travis', {
-			unordered: true,
-			items: items
-		})
-	end
-
-	$lastTravisItems = items
-
+  send_event('travis', unordered: true, items: items)
 end

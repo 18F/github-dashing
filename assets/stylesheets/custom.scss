@@ -1,237 +1,205 @@
 $green: #76ab13;
 $red: #ae442e;
 $orange: orange;
+$background-color: #222;
+$widget-background-color: #333;
+$grey: #777;
+$text-color: #fff;
+$black: #000;
 
 .good {
-	color: rgba(0, 255, 0, 0.4);
+  color: rgba(0, 255, 0, 0.4);
 }
 
 .bad {
-	color: rgba(255, 0, 0, 0.4);
+  color: rgba(255, 0, 0, 0.4);
 }
 
 h1 {
-	font-size: 22px;
+  font-size: 22px;
 }
 
 h1.header {
-	color: rgba(255,255,255,0.5);
-	font-weight: bold;
-	font-size: 30px;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 30px;
+  font-weight: bold;
 }
 
 h2 .value-add {
-	font-size: 0.4em;
-	vertical-align: middle;
+  font-size: 0.4em;
+  vertical-align: middle;
 }
 
 .trend-up {
-	color: $green;
+  color: $green;
 }
 
 .trend-down {
-	color: $red;
+  color: $red;
 }
 
 .more-info {
-	font-size: 12px;
-	opacity: 0.5;
+  font-size: 12px;
+  opacity: 0.5;
 }
 
 .highcontrast {
 
-	background-color: #222;
+  background-color: $background-color;
 
-	.widget {
-		color: white;
-		background-color: #333 !important;
-		padding: 0;
+  .widget {
+    background-color: $widget-background-color;
+    color: $text-color;
+    padding: 0;
 
-		.updated-at {
-			color: rgba(255,255,255,0.5);
-		}
+    // scss-lint:disable SelectorDepth, SelectorFormat
+    .updated-at {
+      color: rgba(255, 255, 255, 0.5);
+    }
 
-		.x_tick .title {
-			color: rgba(255,255,255,0.5);
-			// Avoid overlap with cols, a bit hacky
-			padding-bottom: 15px;
-			padding-left: 10px;
-		}
+    .x_tick .title {
+      color: rgba(255, 255, 255, 0.5);
+      // Avoid overlap with cols, a bit hacky
+      padding-bottom: 15px;
+      padding-left: 10px;
+    }
 
-		&.widget-graph .y_ticks {
-			fill: rgba(255,255,255,0.5);
-		}
+    &.widget-graph .y_ticks {
+      fill: rgba(255, 255, 255, 0.5);
+    }
+    // scss-lint:enable SelectorDepth, SelectorFormat
 
-	}
+  }
 }
 
 .widget {
-	vertical-align: top;
+  vertical-align: top;
 
-	&.widget-graph, &.widget-series {
-		.more-info {
-			position: inherit;
-			top: auto;
-			bottom: auto;
-		}
-	}
+  &.widget-graph,
+  &.widget-series {
+    .more-info {
+      bottom: auto;
+      position: inherit;
+      top: auto;
+    }
+  }
 
-	&.widget-table {
-		td {
-			&.trend-up {
-				color: $green;
-			}
-			&.trend-down {
-				color: $red;
-			}
-		}
+  &.widget-table {
+    td {
+      &.trend-up {
+        color: $green;
+      }
 
-	}
+      &.trend-down {
+        color: $red;
+      }
+    }
 
-	&.meta_stats {
-		background-color: transparent;
-		color: #777;
-	}
+  }
 
-	&.travis {
-		background-color: #aaa;
-		font-size: 14px;
+  // scss-lint:disable SelectorFormat
+  &.meta_stats {
+    background-color: transparent;
+    color: $grey;
+  }
 
-		ul {
-			margin: 0;
-		}
+  &.travis,
+  &.testable_without_ci {
+  // scss-lint:enable SelectorFormat
+    font-size: 14px;
 
-		li {
-			float: left;
-			margin: 0 5px 5px 0;
-			padding: 3px;
-			border-radius: 3px;
+    ul {
+      margin: 0;
+    }
 
-			* {
-				vertical-align: middle;
-			}
+    li {
+      border-radius: 3px;
+      float: left;
+      margin: 0 5px 5px 0;
+      padding: 3px;
 
-			&.good {
-				background-color: darken($green, 10%);
-			}
+      // scss-lint:disable SelectorDepth
+      * {
+        vertical-align: middle;
+      }
+      // scss-lint:enable SelectorDepth
 
-			&.bad {
-				background-color: $red;
+      &.good {
+        background-color: darken($green, 10%);
+      }
 
-				// Show broken builds larger,
-				// with labels on a separate line.
-				.label {
-					font-size: 24px;
-					display: block;
-				}
+      &.bad {
+        background-color: $red;
 
-				ul {
-					display: block;
+        // Show broken builds larger,
+        // with labels on a separate line.
+        // scss-lint:disable SelectorDepth, NestingDepth
+        .label {
+          display: block;
+          font-size: 24px;
+        }
 
-					.label {
-						font-size: 14px;
-					}
-				}
-			}
+        ul {
+          display: block;
 
-			&.none {
-				background-color: #555;
-			}
+          .label {
+            font-size: 14px;
+          }
+        }
+        // scss-lint:enable SelectorDepth, NestingDepth
+      }
 
-			&.rating {
-				border-radius: 5px;
-				background: darken($orange, 10%);
-				padding: 0px 4px;
-				color: black;
-				font-size: 10px;
+      // scss-lint:disable SelectorDepth
+      a {
+        padding: 2px 4px;
+      }
 
-				&.rating-0 {
-					background-color: $red;
-				}
+      a,
+      ul,
+      li {
+        display: inline-block;
+      }
 
-				&.rating-1 {
-					background-color: $red;
-				}
+      li {
+        border-radius: 3px;
+        font-size: 11px;
+        margin: 0 5px 0 0;
+        padding: 0;
+      }
+      // scss-lint:enable SelectorDepth
+    }
+  }
 
-				&.rating-2 {
-					background-color: $red;
-				}
+  // scss-lint:disable SelectorFormat
+  &.issues_stacked,
+  &.issues_opened,
+  &.forum_unanswered {
+  // scss-lint:enable SelectorFormat
+    // Reverse trends, up is bad
+    .trend-up {
+      color: $red;
+    }
 
-				&.rating-3 {
-					background-color: darken($orange, 10%);
-				}
-
-				&.rating-4 {
-					background-color: darken($orange, 10%);
-				}
-
-				&.rating-5 {
-					background-color: darken($orange, 10%);
-				}
-
-				&.rating-6 {
-					background-color: darken($orange, 10%);
-				}
-
-				&.rating-7 {
-					background-color: darken($green, 10%);
-				}
-
-				&.rating-8 {
-					background-color: darken($green, 10%);
-				}
-
-				&.rating-9 {
-					background-color: darken($green, 10%);
-				}
-
-				&.rating-10 {
-					background-color: darken($green, 10%);
-				}
-			}
-
-			a {
-				padding: 2px 4px;
-			}
-
-			a, ul, li {
-				display: inline-block;
-			}
-
-			li {
-				font-size: 11px;
-				border-radius: 3px;
-				margin: 0 5px 0 0;
-				padding: 0;
-			}
-		}
-	}
-
-	&.issues_stacked, &.issues_opened, &.forum_unanswered {
-		// Reverse trends, up is bad
-		.trend-up {
-			color: $red;
-		}
-		.trend-down {
-			color: $green;
-		}
-	}
+    .trend-down {
+      color: $green;
+    }
+  }
 }
 
 h1 {
-	margin: 5px; // simulate widget spacing
-	padding: 5px;
-	text-align: center;
+  margin: 5px; // simulate widget spacing
+  padding: 5px;
+  text-align: center;
 }
 
 footer {
-	color: rgba(255, 255, 255, 0.5);
-	font-size: 12px;
-	margin: 5px;
-	padding: 15px;
-	text-align: left;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 12px;
+  margin: 5px;
+  padding: 15px;
+  text-align: left;
 
-	a {
-		color: rgba(255, 255, 255, 0.7);
-	}
+  a {
+    color: rgba(255, 255, 255, 0.7);
+  }
 }
