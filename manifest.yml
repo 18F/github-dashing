@@ -5,4 +5,4 @@ applications:
     ORGS: 18F
     SINCE: 6.months.ago.beginning_of_month
     GITHUB_LOGIN: monfresh
-    TRAVIS_IGNORED_REPOS: 18F/save-ferris
+    TRAVIS_IGNORED_REPOS: 18F/save-ferris,18F/C2,18F/afsmallbiz,18F/bronto-api,18F/cf-quotas-db,18F/peacecorps-site
