@@ -9,7 +9,6 @@ GEM
       tzinfo (~> 1.1)
     addressable (2.3.8)
     backports (3.6.6)
-    certifi (14.5.14)
     coffee-script (2.2.0)
       coffee-script-source
       execjs
@@ -70,9 +69,6 @@ GEM
     sawyer (0.6.0)
       addressable (~> 2.3.5)
       faraday (~> 0.8, < 0.10)
-    sentry-raven (0.14.0)
-      certifi
-      faraday (>= 0.7.6)
     sinatra (1.4.6)
       rack (~> 1.4)
       rack-protection (~> 1.4)
@@ -116,5 +112,4 @@ DEPENDENCIES
   rake
   rspec
   rspec-mocks
-  sentry-raven
   typhoeus

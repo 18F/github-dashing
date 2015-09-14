@@ -124,13 +124,6 @@ Now you're ready to add your app to Heroku:
 	heroku plugins:install git://github.com/ddollar/heroku-config.git
 	heroku config:push
 
-## Logging through Sentry
-
-The project has optional [Sentry](http://getsentry.com) integration for logging exceptions.
-Its particularly useful to capture Github API errors, e.g. when a project has been renamed.
-To use it, configure your `SENTRY_DSN` in `.env` ([docs](https://getsentry.com/docs/)).
-You'll need to sign up to Sentry to receive a valid DSN.
-
 # Contributing
 
 Pull requests are very welcome! Please make sure that the code you're fixing is actually
