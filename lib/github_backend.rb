@@ -16,12 +16,6 @@ class GithubBackend
     @logger.level = Logger::DEBUG unless ENV['RACK_ENV'] == 'production'
   end
 
-  def testable_repos
-    projects = JSON.parse(Faraday.get('https://team-api.18f.gov/public/api/projects/').body)
-
-    projects.values.select { |p| p['testable'] }.map { |p| p['github'].first }
-  end
-
   # Returns EventCollection
   def contributor_stats_by_author(opts)
     opts = OpenStruct.new(opts) unless opts.is_a? OpenStruct

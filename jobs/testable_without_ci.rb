@@ -9,9 +9,7 @@ require File.expand_path('../../lib/travis_backend', __FILE__)
 # server, but don't.
 SCHEDULER.every '1d', first_in: '1s' do |_job|
   travis_backend = TravisBackend.new
-  github_backend = GithubBackend.new
-
-  testable_repos = github_backend.testable_repos
+  testable_repos = TeamApi.testable_repos
 
   travis_repos = testable_repos.map { |repo| travis_backend.get_repo(repo) }
   repos_without_builds = travis_repos.select { |repo| repo['last_build_id'].nil? }
