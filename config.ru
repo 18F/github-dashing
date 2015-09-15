@@ -6,20 +6,11 @@ require 'yaml'
 require 'time'
 require 'active_support'
 require 'active_support/core_ext'
-require 'raven'
 require 'json'
 require 'typhoeus'
 require 'typhoeus/adapters/faraday'
 
-use Raven::Rack
-Raven.configure do |config|
-  if ENV['SENTRY_DSN']
-  	# TODO Fix "undefined method `send_in_current_environment?'" and disable for dev
-  	config.environments = %w[ production development ] 
-  else
-  	config.environments = []
-  end
-end
+fail('ORGS environment variable is not set!') if ENV['ORGS'].nil?
 
 # Persist on disk, don't exceed heroku memory limit
 stack = Faraday::RackBuilder.new do |builder|
@@ -37,6 +28,7 @@ Octokit.middleware = stack
 # Verbose logging in Octokit
 Octokit.configure do |config|
   config.middleware.response :logger unless ENV['RACK_ENV'] == 'production'
+  config.access_token = ENV['GITHUB_OAUTH_TOKEN']
 end
 
 Octokit.auto_paginate = true
@@ -45,7 +37,6 @@ ENV['SINCE'] ||= '12.months.ago.beginning_of_month'
 ENV['SINCE'] = DateTime.iso8601(ENV['SINCE']).to_s rescue eval(ENV['SINCE']).to_s
 
 configure do
-
   set :auth_token, 'YOUR_AUTH_TOKEN'
   set :environment, ENV['RACK_ENV']
   disable :protection
@@ -57,14 +48,6 @@ configure do
     end
   end
 end
-
-# class NoCompression
-#   def compress(string)
-#     # do nothing
-#     string
-#   end
-# end
-# Sinatra::Application.sprockets.js_compressor = NoCompression.new
 
 map Sinatra::Application.assets_prefix do
   run Sinatra::Application.sprockets
