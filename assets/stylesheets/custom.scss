@@ -104,7 +104,8 @@ h2 .value-add {
   }
 
   &.travis,
-  &.testable_without_ci {
+  &.testable_without_ci,
+  &.repos_without_about_yml {
   // scss-lint:enable SelectorFormat
     font-size: 14px;
 

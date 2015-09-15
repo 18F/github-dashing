@@ -10,7 +10,6 @@ SCHEDULER.every '1h', first_in: '1s' do |_job|
   opened_series = [[], []]
   closed_series = [[], []]
   issues_by_period = backend.issue_count_by_status(
-    orgs: (ENV['ORGS'].split(',')),
     repos: (ENV.fetch('REPOS', '').split(',')),
     since: ENV['SINCE']
   ).group_by_month(ENV['SINCE'].to_datetime)

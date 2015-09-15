@@ -15,4 +15,5 @@ gem 'typhoeus'
 group :test do
   gem 'rspec'
   gem 'rspec-mocks'
+  gem 'webmock'
 end

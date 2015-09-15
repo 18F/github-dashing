@@ -15,3 +15,5 @@ RSpec.configure do |config|
   #     --seed 1234
   config.order = 'random'
 end
+
+WebMock.disable_net_connect!(allow: [/localhost/, /127\.0\.0\.1/, /codeclimate.com/])

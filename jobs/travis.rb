@@ -7,12 +7,9 @@ end
 
 SCHEDULER.every '2m', first_in: '1s' do |_job|
   travis_backend = TravisBackend.new
-  enabled_repos = []
   ignored_repos = ENV['TRAVIS_IGNORED_REPOS'].split(',').compact
 
-  ENV['ORGS'].split(',').each do |org|
-    enabled_repos = travis_backend.get_enabled_repos_by_org(org)
-  end
+  enabled_repos = travis_backend.get_enabled_repos_by_org(ENV['ORG'])
 
   items = enabled_repos.map do |repo|
     {

@@ -41,16 +41,14 @@ First install the required dependencies through `bundle install`.
 
 The project is configured through environment variables.
 Copy the `.env.sample` configuration file to `.env`.
-All configuration is optional, apart from either `ORGS` or `REPOS`.
+All configuration is optional, apart from either `ORG` or `REPOS`.
 
- * `ORGS`: Github organizations. Separate multiple by comma. Will use all repos for an organization.
-   Example: `silverstripe,silverstripe-labs`.
- * `REPOS`: Github repository identifiers. Separate multiple by comma. If used alongside `ORGS`, the logic will add
-   all mentioned repos to the ones retrieved from `ORGS`.
+ * `ORG`: GitHub organization.
+ * `REPOS`: Comma-separated GitHub repository full names. If used alongside `ORG`, the logic will add
+   all mentioned repos to the ones retrieved from `ORG`.
    Example: `silverstripe/silverstripe-framework,silverstripe/silverstripe-cms`
  * `SINCE`: Date string, or relative time parsed through [http://guides.rubyonrails.org/active_support_core_extensions.html](ActiveSupport). Example: `12.months.ago.beginning_of_month`, `2012-01-01`
- * `GITHUB_LOGIN`: Github authentication is optional, but recommended
- * `GITHUB_OAUTH_TOKEN`: See above
+ * `GITHUB_OAUTH_TOKEN`: Required in order to avoid being rate limited.
  * `TRAVIS_BRANCH_BLACKLIST`: A blacklist of branches ignored by repo, as a JSON string.
    This is useful to ignore old branches which no longer have active builds.
    Example: `{"silverstripe-labs/silverstripe-newsletter":["0.3","0.4"]}`
@@ -75,7 +73,6 @@ which can quickly exhaust the API limitations for unauthenticated use.
 In order to authenticate, create a new [API Access Token](https://github.com/settings/applications)
 on your github.com account, and add it to the `.env` configuration:
 
-	GITHUB_LOGIN=your_login
 	GITHUB_OAUTH_TOKEN=2b0ff00...................
 
 The dashboard uses the official Github API client for Ruby ([Octokit](https://github.com/octokit/octokit.rb)),
