@@ -5,37 +5,69 @@ require 'active_support'
 require 'active_support/core_ext'
 require File.expand_path('../../lib/helper', __FILE__)
 
-SCHEDULER.every '1h', first_in: '1s' do |_job|
+SCHEDULER.every '1d', first_in: '50s' do |_job|
   backend = GithubBackend.new
   opened_series = [[], []]
   closed_series = [[], []]
-  issues_by_period = backend.issue_count_by_status(
-    repos: (ENV.fetch('REPOS', '').split(',')),
-    since: ENV['SINCE']
-  ).group_by_month(ENV['SINCE'].to_datetime)
+  pull_series = [[], []]
+  month = ENV['SINCE'].to_datetime
+
+  issues_by_period = backend.issue_count_by_status.group_by_month(month)
+
   issues_by_period.each_with_index do |(period, issues), i|
     timestamp = Time.strptime(period, '%Y-%m').to_i
 
-    opened_count = issues.count { |issue| issue.key == 'open' }
+    opened_count = issues.count { |issue| issue.key == 'open' && issue.type == 'issue' }
     opened_series[0] << {
       x: timestamp,
       y: opened_count
     }
     # Add empty second series stack, and extrapolate last month for better trend visualization
+    opened_series_count =
+      if i == issues_by_period.count - 1
+        GithubDashing::Helper.extrapolate_to_month(opened_count) - opened_count
+      else
+        0
+      end
     opened_series[1] << {
       x: timestamp,
-      y: (i == issues_by_period.count - 1) ? GithubDashing::Helper.extrapolate_to_month(opened_count) - opened_count : 0
+      y: opened_series_count
     }
 
-    closed_count = issues.count { |issue| issue.key == 'closed' }
+    closed_count = issues.count { |issue| issue.key == 'closed' && issue.type == 'issue' }
     closed_series[0] << {
       x: timestamp,
       y: closed_count
     }
     # Add empty second series stack, and extrapolate last month for better trend visualization
+    closed_series_count =
+      if i == issues_by_period.count - 1
+        GithubDashing::Helper.extrapolate_to_month(closed_count) - closed_count
+      else
+        0
+      end
     closed_series[1] << {
       x: timestamp,
-      y: (i == issues_by_period.count - 1) ? GithubDashing::Helper.extrapolate_to_month(closed_count) - opened_count : 0
+      y: closed_series_count
+    }
+
+    # ----- PULL REQUESTS ------ #
+    open_pulls_count = issues.count { |issue| issue.key == 'open' && issue.type == 'pull_request' }
+
+    pull_series[0] << {
+      x: timestamp,
+      y: open_pulls_count
+    }
+    # Add empty second series stack, and extrapolate last month for better trend visualization
+    pull_series_count =
+      if i == issues_by_period.count - 1
+        GithubDashing::Helper.extrapolate_to_month(open_pulls_count) - open_pulls_count
+      else
+        0
+      end
+    pull_series[1] << {
+      x: timestamp,
+      y: pull_series_count
     }
   end
 
@@ -76,4 +108,22 @@ SCHEDULER.every '1h', first_in: '1s' do |_job|
              trend_class: trend_class_closed,
              arrow: 'icon-arrow-' + trend_class_closed
             )
+
+  # ----------- PULL REQUEST STATS -------------------------- #
+
+  # rubocop:disable Style/RescueModifier
+  current = pull_series[0][-1][:y] rescue 0
+  prev = pull_series[0][-2][:y] rescue 0
+  # rubocop:enable Style/RescueModifier
+  trend = GithubDashing::Helper.trend_percentage_by_month(prev, current)
+  trend_class = GithubDashing::Helper.trend_class(trend)
+
+  send_event(
+    'pull_requests',
+    series: pull_series, # Prepare for showing open/closed stacked
+    displayedValue: current,
+    difference: trend,
+    trend_class: trend_class,
+    arrow: 'icon-arrow-' + trend_class
+  )
 end
