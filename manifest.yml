@@ -3,5 +3,5 @@ applications:
 - name: project-dashboard
   env:
     ORG: 18F
-    SINCE: 6.months.ago.beginning_of_month
+    SINCE: 1.month.ago.beginning_of_month
     TRAVIS_IGNORED_REPOS: 18F/save-ferris,18F/C2,18F/afsmallbiz,18F/bronto-api,18F/cf-quotas-db,18F/peacecorps-site

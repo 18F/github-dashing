@@ -37,8 +37,6 @@ Metrics/LineLength:
   URISchemes:
   - http
   - https
-  Exclude:
-  - 'jobs/issues_status.rb'
 
 Metrics/MethodLength:
   Description: Avoid methods longer than 10 lines of code.

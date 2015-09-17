@@ -33,7 +33,7 @@ end
 
 Octokit.auto_paginate = true
 
-ENV['SINCE'] ||= '12.months.ago.beginning_of_month'
+ENV['SINCE'] ||= '1.month.ago.beginning_of_month'
 ENV['SINCE'] = DateTime.iso8601(ENV['SINCE']).to_s rescue eval(ENV['SINCE']).to_s
 
 configure do

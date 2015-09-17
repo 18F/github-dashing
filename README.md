@@ -41,17 +41,13 @@ First install the required dependencies through `bundle install`.
 
 The project is configured through environment variables.
 Copy the `.env.sample` configuration file to `.env`.
-All configuration is optional, apart from either `ORG` or `REPOS`.
+
+All environment variables are optional, apart from `ORG`.
 
  * `ORG`: GitHub organization.
- * `REPOS`: Comma-separated GitHub repository full names. If used alongside `ORG`, the logic will add
-   all mentioned repos to the ones retrieved from `ORG`.
-   Example: `silverstripe/silverstripe-framework,silverstripe/silverstripe-cms`
- * `SINCE`: Date string, or relative time parsed through [http://guides.rubyonrails.org/active_support_core_extensions.html](ActiveSupport). Example: `12.months.ago.beginning_of_month`, `2012-01-01`
+   Example: `18F`
+ * `SINCE`: Date string, or relative time parsed through [http://guides.rubyonrails.org/active_support_core_extensions.html](ActiveSupport). Example: `1.month.ago.beginning_of_month`, `2012-01-01`
  * `GITHUB_OAUTH_TOKEN`: Required in order to avoid being rate limited.
- * `TRAVIS_BRANCH_BLACKLIST`: A blacklist of branches ignored by repo, as a JSON string.
-   This is useful to ignore old branches which no longer have active builds.
-   Example: `{"silverstripe-labs/silverstripe-newsletter":["0.3","0.4"]}`
 
 You can also specify a custom env file through setting a `DOTENV_FILE` environment variable first.
 This is useful if you want to have version controlled defaults (see `.env.silverstripe`).
