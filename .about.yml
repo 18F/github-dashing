@@ -1,0 +1,115 @@
+---
+# .about.yml project metadata
+#
+# Short name that acts as the project identifier (required)
+name: project-dashboard
+
+# Full proper name of the project (required)
+full_name: 'Project Status Dashboard'
+
+# The type of content in the repo
+# values: app, docs, policy
+type: app
+
+# Describes whether a project team, working group/guild, etc. owns the repo (required)
+# values: guild, working-group, project
+owner_type: working-group
+
+# Maturity stage of the project (required)
+# values: discovery, alpha, beta, live
+stage: alpha
+
+# Whether or not the project is actively maintained (required)
+# values: active, deprecated
+status: active
+
+# Description of the project
+description: >
+  A dashboard based on the Dashing framework that shows info and statistics
+  on all 18F GitHub repos, such as whether CI builds are passing or failing,
+  aggregate amount of pull requests and issues, test coverage percentages,
+  and code quality metrics.
+
+# Should be 'true' if the project has a continuous build (required)
+# values: true, false
+testable: true
+
+# Team members contributing to the project (required)
+# Items:
+# - github: GitHub user name
+#   id: Internal team identifier/user name
+#   role: Team member's role; leads should be designated as 'lead'
+team:
+- github: monfresh
+  id: Moncef Belyamani
+  role: lead
+- github: arowla
+  id: Alison Rowland
+  role: dev
+- github: mbland
+  id: Mike Bland
+  role: dev
+- github: jessieay
+  id: Jessie Young
+  role: dev
+
+# Brief descriptions of significant project developments
+# milestones:
+# -
+
+# Technologies used to build the project
+stack:
+- Ruby
+- Sinatra
+- Dashing
+
+# Brief description of the project's outcomes
+# impact:
+
+# Services used to supply project status information
+# Items:
+# - name: Name of the service
+#   category: Type of the service
+#   url: URL for detailed information
+#   badge: URL for the status badge
+services:
+- name: GitHub
+  category: API
+  url: https://developer.github.com/
+- name: Travis
+  category: API
+  url: http://docs.travis-ci.com/api/
+- name: '18F Team API/Projects'
+  category: API
+  url: https://team-api.18f.gov/public/api/projects/
+
+# Licenses that apply to the project and/or its components (required)
+# Items by property name pattern:
+#   .*:
+#     name: Name of the license from the Software Package Data Exchange (SPDX): https://spdx.org/licenses/
+#     url: URL for the text of the license
+licenses:
+  github-dashing:
+    name: MIT
+    url: https://github.com/chillu/github-dashing/blob/master/LICENSE.md
+  18F-github-dashing:
+    name: CC0
+    url: https://github.com/18F/github-dashing/blob/master/LICENSE.md
+
+# Blogs or websites associated with project development
+# blog:
+# -
+
+# Links to project artifacts
+# Items:
+# - url: URL for the link
+#   text: Anchor text for the link
+links:
+- url: 'https://project-dashboard.18f.gov/default'
+  text: '18F Project Status Dashboard'
+- url: 'https://project-dashboard.18f.gov/github_stats'
+  text: '18F GitHub Stats Dashboard'
+
+# Email addresses of points-of-contact
+# contact:
+# - 'https://github.com/18F/github-dashing/issues'
