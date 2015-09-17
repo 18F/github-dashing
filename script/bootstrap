@@ -1,0 +1,11 @@
+#!/bin/sh
+
+set -e
+
+if [ ! -f .env ]; then
+  cp .env.sample .env
+fi
+
+bundle install
+
+echo "All done!"

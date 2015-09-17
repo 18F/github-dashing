@@ -1,131 +1,100 @@
-# Github Contribution Dashboard
+# 18F Projects Status Dashboard
 
-[![Build Status](https://travis-ci.org/chillu/github-dashing.png?branch=master)](https://travis-ci.org/chillu/github-dashing)
+[![Build Status](https://travis-ci.org/18F/github-dashing.png?branch=master)](https://travis-ci.org/18F/github-dashing)
 
-Dashboard to monitor the health of github projects based on their contribution statistics.
+Dashboard to monitor the health of 18F GitHub repos.
 
- - Aggregates usage data across multiple repos from the Github API
- - Widgets support aggregate statistics of multiple repos or even all repos within an organization.
- - Contributor scores based on activity in commits as well as in comments and pull requests.
- - [Travis CI](http://travis-ci.org) build status across multiple branches
- - Trend projections for current month on issues opened, issues closed and pull requests
- - Quick integration of other data sources through a common widget framework
- - Easy hosting through [Heroku](http://heroku.com)
+Widgets available at https://project-dashboard.18f.gov/default:
 
-All visualizations are optimized to encourage direct action by individuals, so prefers short-term trends and
-relative measures over long-term data. For example, the leaderboard only inspects the last 30 days
-of contributions, allowing new contributors to get to the top more easily.
+- [Travis CI](http://travis-ci.org) build status (updates every 2 minutes)
+- Repos whose `.about.yml` defines them as testable but don't have builds
+	running on a CI service such as Travis or CircleCI (updates once a day)
+- Repos that don't have an `.about.yml` (updates once a day)
 
-Preview: The [SilverStripe CMS](http://silverstripe.org) project, aggregating over 50 repositories
-that the project either maintains or actively contributes to.
-View it live at [github-dashing.herokuapp.com](http://github-dashing.herokuapp.com/default).
-![Preview](assets/images/preview.png?raw=true)
+![Preview](assets/images/project_dashboard_default_preview.png?raw=true)
 
-Preview: Pull request stats with trend projection for current month
-![Preview](assets/images/preview_stats.png?raw=true)
+Widgets available at https://project-dashboard.18f.gov/github_stats:
 
-Preview: Travis build status with per-branch status and code quality indicators
-![Preview](assets/images/preview_travis.png?raw=true)
+- Trend projections for current month on issues opened, issues closed and pull requests
 
-The dashboard is based on [Dashing](http://shopify.github.com/dashing), a Ruby web application
-built on the [Sinatra](http://www.sinatrarb.com) framework. It uses the Github API rather than
-[githubarchive.org](http://githubarchive.org) data dumps because of the immediate nature
-of dashboard update (refreshes every hour by default). The code used to be based
-on Google BigQuery aggregation, but this turned out to be infeasible due to query size and BigQuery pricing.
+![Preview](assets/images/project_dashboard_github_stats_preview.png?raw=true)
+
+The dashboard is based on [Dashing](http://shopify.github.com/dashing), a Ruby
+web application built on the [Sinatra](http://www.sinatrarb.com) framework.
+
+APIs used:
+
+- [GitHub](https://developer.github.com/)
+- [Travis](http://docs.travis-ci.com/api/)
+- [18F Team API/Projects](https://team-api.18f.gov/public/api/projects/)
 
 ## Setup
 
-### Generic Configuration
+    git clone https://github.com/18F/github-dashing.git && cd github-dashing
+    script/bootstrap
 
-First install the required dependencies through `bundle install`.
-
-The project is configured through environment variables.
-Copy the `.env.sample` configuration file to `.env`.
+The project is configured through environment variables, which you can
+modify in the `.env` file.
 
 All environment variables are optional, apart from `ORG`.
 
- * `ORG`: GitHub organization.
-   Example: `18F`
- * `SINCE`: Date string, or relative time parsed through [http://guides.rubyonrails.org/active_support_core_extensions.html](ActiveSupport). Example: `1.month.ago.beginning_of_month`, `2012-01-01`
- * `GITHUB_OAUTH_TOKEN`: Required in order to avoid being rate limited.
+- `ORG`: GitHub organization. Example: `18F`
+- `SINCE`: Date string, or relative time parsed through
+ [http://guides.rubyonrails.org/active_support_core_extensions.html](ActiveSupport).
+ Example: `1.month.ago.beginning_of_month`, `2012-01-01`
+- `GITHUB_OAUTH_TOKEN`: Required in order to avoid being rate limited.
 
-You can also specify a custom env file through setting a `DOTENV_FILE` environment variable first.
-This is useful if you want to have version controlled defaults (see `.env.silverstripe`).
 
-### Custom Configuration
+### GitHub API Access
 
-The dashboard is used by the [SilverStripe CMS](http://silverstripe.org) project,
-some of the functionality is specific to this use case. Simply leave out the configuration values
-in case you're use case is different.
+The dashboard uses the public GitHub API, which doesn't require authentication.
+Depending on how many repositories you're iterating through, hundreds of API
+calls might be necessary, which can quickly exhaust the API limitations for
+unauthenticated use.
 
- * `FORUM_STATS_URL`: Absolute URL returning JSON data for forum statistics such as "unanswered posts"
-
-### Github API Access
-
-The dashboard uses the public github API, which doesn't require authentication.
-Depending on how many repositories you're showing, hundreds of API calls might be necessary,
-which can quickly exhaust the API limitations for unauthenticated use.
-
-In order to authenticate, create a new [API Access Token](https://github.com/settings/applications)
-on your github.com account, and add it to the `.env` configuration:
+In order to authenticate, create a new [API Access Token] on your github.com
+account, and add it to the `.env` configuration:
 
 	GITHUB_OAUTH_TOKEN=2b0ff00...................
 
-The dashboard uses the official Github API client for Ruby ([Octokit](https://github.com/octokit/octokit.rb)),
-and respects HTTP cache headers where appropriate to avoid making unnecessary API calls.
+The dashboard uses the official GitHub API client for Ruby ([Octokit](https://github.com/octokit/octokit.rb)),
+and respects HTTP cache headers where appropriate to avoid making unnecessary
+API calls, thanks to [faraday-http-cache].
 
-Dashing also supports custom API endpoints required for Github Enterprise, by setting
-the `OCTOKIT_API_ENDPOINT` environment variable ([http://octokit.github.io/octokit.rb/#Using_ENV_variables](details)).
+Dashing also supports [custom API endpoints] required for GitHub Enterprise,
+by setting the `OCTOKIT_API_ENDPOINT` environment variable.
+
+[API Access Token]: https://github.com/settings/applications
+[faraday-http-cache]: https://github.com/plataformatec/faraday-http-cache
+[custom API endpoints]: http://octokit.github.io/octokit.rb/#Using_ENV_variables
 
 ## Usage
 
-Finally, start the dashboard server:
+Start the dashboard server:
 
 	dashing start
 
-Now you can browse the dashboard at `http://localhost:3030/default`.
+Now you can browse the dashboard at
+[http://localhost:3030/default](http://localhost:3030/default).
 
 ## Tasks
 
-The Dashing jobs query for their data whenever the server is started, and then with a frequency of 1h by default.
+Once the server is started, the Dashing jobs start querying for their data at
+a time specified by the `first_in` option, and then with a frequency specified
+by the `every` option. See any job in the `jobs` directory for an example.
 
-## Heroku Deployment
+Credits
+-------
 
-Since Dashing is simply a Sinatra Rack app under the hood, deploying is a breeze.
-It takes around 30 seconds to do :)
+Portions of this repo are based on Ingo Schommer's work in
+https://github.com/chillu/github-dashing.
 
-First, [sign up](https://id.heroku.com/signup) for the free service.
-[Download](https://devcenter.heroku.com/articles/quickstart) the dev tools
-and install them with your account credentials.
+### Public domain
 
-Due to a bug in config pushing on Heroku, its important to leave all single-line values in `.env` unquoted.
+Ingo Schommer's original work remains covered under an [MIT License](https://github.com/chillu/github-dashing/blob/master/LICENSE).
 
-Now you're ready to add your app to Heroku:
+18F's work on this project is in the worldwide [public domain](LICENSE.md), as are contributions to our project. As stated in [CONTRIBUTING](CONTRIBUTING.md):
 
-	# Create a git repo for your project, and add your files.
-	git init
-	git add .
-	git commit -m "My beautiful dashboard"
-
-	# Create the application on Heroku
-	heroku apps:create myapp
-
-	# Push the application to Heroku
-	git push heroku master
-
-	# Push your `.env` configuration
-	heroku plugins:install git://github.com/ddollar/heroku-config.git
-	heroku config:push
-
-# Contributing
-
-Pull requests are very welcome! Please make sure that the code you're fixing is actually
-part of this project, and not just generated from the upstream [Dashing]() library templates.
-
-# Acknowledgements
-
-Thanks to [SilverStripe Ltd.](http://silverstripe.com) for sponsoring the Heroku hosting
-and the physical dashboard at the SilverStripe offices in Wellington, New Zealand.
-
-# License
-Distributed under the MIT license
+> This project is in the public domain within the United States, and copyright and related rights in the work worldwide are waived through the [CC0 1.0 Universal public domain dedication](https://creativecommons.org/publicdomain/zero/1.0/).
+>
+> All contributions to this project will be released under the CC0 dedication. By submitting a pull request, you are agreeing to comply with this waiver of copyright interest.
