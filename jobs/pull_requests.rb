@@ -9,7 +9,6 @@ SCHEDULER.every '1h', first_in: '1s' do |_job|
 
   pulls_by_period = backend.pull_count_by_status(
     period: 'month',
-    orgs: (ENV['ORGS'].split(',')),
     repos: (ENV.fetch('REPOS', '').split(',')),
     since: ENV['SINCE']
   ).group_by_month(ENV['SINCE'].to_datetime)

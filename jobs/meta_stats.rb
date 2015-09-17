@@ -6,7 +6,6 @@ require File.expand_path('../../lib/helper', __FILE__)
 SCHEDULER.every '1h', first_in: '1s' do |_job|
   backend = GithubBackend.new
   repos = backend.get_repos(
-    orgs: (ENV['ORGS'].split(',')),
     repos: (ENV.fetch('REPOS', '').split(',')),
     since: ENV['SINCE']
   )

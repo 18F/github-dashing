@@ -10,7 +10,7 @@ require 'json'
 require 'typhoeus'
 require 'typhoeus/adapters/faraday'
 
-fail('ORGS environment variable is not set!') if ENV['ORGS'].nil?
+fail('ORG environment variable is not set!') if ENV['ORG'].nil?
 
 # Persist on disk, don't exceed heroku memory limit
 stack = Faraday::RackBuilder.new do |builder|

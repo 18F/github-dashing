@@ -1,0 +1,18 @@
+{
+  "type": "file",
+  "encoding": "base64",
+  "size": 5362,
+  "name": ".about.yml",
+  "path": ".about.yml",
+  "content": "encoded content ...",
+  "sha": "3d21ec53a331a6f037a91c368710b99387d012c1",
+  "url": "https://api.github.com/repos/18F/save-ferris/contents/.about.yml",
+  "git_url": "https://api.github.com/repos/18F/save-ferris/git/blobs/3d21ec53a331a6f037a91c368710b99387d012c1",
+  "html_url": "https://github.com/18F/save-ferris/blob/master/.about.yml",
+  "download_url": "https://raw.githubusercontent.com/18F/save-ferris/master/.about.yml",
+  "_links": {
+    "git": "https://api.github.com/repos/18F/save-ferris/git/blobs/3d21ec53a331a6f037a91c368710b99387d012c1",
+    "self": "https://api.github.com/repos/18F/save-ferris/contents/.about.yml",
+    "html": "https://github.com/18F/save-ferris/blob/master/.about.yml"
+  }
+}
