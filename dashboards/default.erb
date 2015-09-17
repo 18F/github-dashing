@@ -1,6 +1,8 @@
-<% content_for(:title) { "18F Projects Health Dashboard" } %>
+<% content_for(:title) do %>
+ <%= "#{ENV['ORG']} Projects Health Dashboard" %>
+<% end %>
 <div class="gridster highcontrast">
-  <h1 class="header">18F Projects Health Dashboard</h1>
+  <h1 class="header"><%= "#{ENV['ORG']} Projects Health Dashboard" %></h1>
   <ul>
     <li data-row="1" data-col="1" data-sizex="3" data-sizey="1">
       <div
