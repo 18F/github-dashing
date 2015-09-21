@@ -13,7 +13,7 @@ class GithubBackend
     @logger = Logger.new(STDOUT)
     @logger.level = Logger::DEBUG unless ENV['RACK_ENV'] == 'production'
     @start_date = ENV['SINCE']
-    @repos = Octokit.org_repos(ENV['ORG']).map(&:full_name)
+    @repos = ENV['GITHUB_ORG_REPOS'].split(',').map { |repo| "#{ENV['ORG']}/#{repo}" }
   end
 
   def repos_without_about_yml

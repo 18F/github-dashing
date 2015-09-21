@@ -4,7 +4,21 @@
 <div class="gridster highcontrast">
   <h1 class="header"><%= "#{ENV['ORG']} Projects Health Dashboard" %></h1>
   <ul>
-    <li data-row="1" data-col="1" data-sizex="3" data-sizey="1">
+    <li data-row="1" data-col="5" data-sizex="3" data-sizey="4">
+      <div
+        data-id="travis"
+        data-view="NestedList"
+        data-title="Travis Build Status">
+      </div>
+    </li>
+    <li data-row="1" data-col="5" data-sizex="3" data-sizey="2">
+      <div
+        data-id="circle"
+        data-view="NestedList"
+        data-title="Circle CI Build Status">
+      </div>
+    </li>
+    <li data-row="2" data-col="1" data-sizex="3" data-sizey="1">
       <div
         data-id="testable_without_ci"
         data-view="NestedList"
@@ -16,13 +30,6 @@
         data-id="repos_without_about_yml"
         data-view="NestedList"
         data-title="GitHub Repos without .about.yml">
-      </div>
-    </li>
-    <li data-row="1" data-col="5" data-sizex="3" data-sizey="4">
-      <div
-        data-id="travis"
-        data-view="NestedList"
-        data-title="Travis Build Status">
       </div>
     </li>
   </ul>

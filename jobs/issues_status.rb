@@ -5,7 +5,7 @@ require 'active_support'
 require 'active_support/core_ext'
 require File.expand_path('../../lib/helper', __FILE__)
 
-SCHEDULER.every '1d', first_in: '50s' do |_job|
+SCHEDULER.every '1d', first_in: '2m' do |_job|
   backend = GithubBackend.new
   opened_series = [[], []]
   closed_series = [[], []]

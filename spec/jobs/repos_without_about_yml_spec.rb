@@ -2,14 +2,15 @@ require 'dashing'
 require 'github_backend'
 require 'webmock/rspec'
 require 'support/fake_github_api'
+require 'support/job_helper'
+include JobHelper
 
 describe 'repos_without_about_yml' do
   before do
-    ENV['ORG'] = '18F'
-    stub_request(:any, /api.github.com/).to_rack(FakeGithubApi)
+    github_test_setup
   end
 
-  let(:job) do
+  def job
     SCHEDULER.jobs.values.
       select { |job| job.block.to_s.include?('repos_without_about_yml') }.first
   end
@@ -19,7 +20,11 @@ describe 'repos_without_about_yml' do
   end
 
   it 'runs every 24 hours' do
-    expect(job.frequency).to eq(24 * 3600)
+    expect(job.schedule_info).to eq '1d'
+  end
+
+  it 'starts after 1 minute' do
+    expect(job.next_time).to be_within(1.second).of(1.minute.from_now)
   end
 
   it 'calls GithubBackend.repos_without_about_yml' do

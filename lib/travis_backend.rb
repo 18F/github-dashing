@@ -28,7 +28,7 @@ class TravisBackend
   def fetch(path)
     @logger.debug format('Fetching %s%s', @api_base, path)
 
-    conn = Faraday.new @api_base, ssl: { verify: false }
+    conn = Faraday.new @api_base
     response = conn.get path
 
     # TODO: Better error handling
