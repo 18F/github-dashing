@@ -17,4 +17,10 @@ SCHEDULER.every '1d', first_in: '1m' do |_job|
   end
 
   send_event('repos_without_about_yml', unordered: true, items: items)
+
+  total_org_repos = ENV['GITHUB_ORG_REPOS'].split(',').size.to_f
+  repos_without_about = repos_without_about_yml.size.to_f
+  percentage_adoption = (1 - repos_without_about / total_org_repos) * 100
+
+  send_event('about_percentage', value: percentage_adoption.round(2))
 end
