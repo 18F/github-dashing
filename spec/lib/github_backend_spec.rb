@@ -1,11 +1,12 @@
 require 'github_backend'
 require 'webmock/rspec'
 require 'support/fake_github_api'
+require 'support/job_helper'
+include JobHelper
 
 describe GithubBackend do
   before do
-    ENV['ORG'] = '18F'
-    stub_request(:any, /api.github.com/).to_rack(FakeGithubApi)
+    github_test_setup
   end
 
   describe '.repos_without_about_yml' do

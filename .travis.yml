@@ -3,3 +3,7 @@ rvm:
   - 2.2.2
 cache: bundler
 sudo: false
+before_script:
+- cp .env.sample .env
+script:
+- bundle exec rspec spec
