@@ -13,7 +13,7 @@ require File.expand_path('../../lib/circle_backend', __FILE__)
 SCHEDULER.every '1d', first_in: '50s' do |_job|
   org_repos = ENV['GITHUB_ORG_REPOS'].split(',')
 
-  circle_builds = org_repos.map { |repo| CircleBackend.get_last_build_for(repo) }.flatten.compact
+  circle_builds = org_repos.flat_map { |repo| CircleBackend.get_last_build_for(repo) }.compact
 
   active_circle_repos = circle_builds.map { |build| build['reponame'] }
 

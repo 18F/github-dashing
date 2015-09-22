@@ -11,8 +11,7 @@ describe 'repos_without_about_yml' do
   end
 
   def job
-    SCHEDULER.jobs.values.
-      select { |job| job.block.to_s.include?('repos_without_about_yml') }.first
+    job_matching('repos_without_about_yml')
   end
 
   def app

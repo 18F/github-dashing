@@ -1,12 +1,14 @@
 module JobHelper
+  def job_matching(name)
+    SCHEDULER.jobs.values.detect { |job| job.block.to_s.include?(name) }
+  end
+
   def github_orgs_job
-    SCHEDULER.jobs.values.
-      select { |job| job.block.to_s.include?('github_org_repos') }.first
+    job_matching('github_org_repos')
   end
 
   def circle_repos_job
-    SCHEDULER.jobs.values.
-      select { |job| job.block.to_s.include?('active_circle_repos') }.first
+    job_matching('active_circle_repos')
   end
 
   def github_test_setup

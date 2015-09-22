@@ -14,6 +14,16 @@ RSpec.configure do |config|
   # the seed, which is printed after each run.
   #     --seed 1234
   config.order = 'random'
+
+  config.before(:each) do
+    ENV['GITHUB_ORG_REPOS'] = nil
+    ENV['ACTIVE_CIRCLE_REPOS'] = nil
+  end
+
+  config.after(:each) do
+    ENV['GITHUB_ORG_REPOS'] = nil
+    ENV['ACTIVE_CIRCLE_REPOS'] = nil
+  end
 end
 
 WebMock.disable_net_connect!(allow: [/localhost/, /127\.0\.0\.1/, /codeclimate.com/])

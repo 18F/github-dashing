@@ -11,8 +11,7 @@ describe 'GitHub Org Repos' do
   end
 
   def job
-    SCHEDULER.jobs.values.
-      select { |job| job.block.to_s.include?('github_org_repos') }.first
+    github_orgs_job
   end
 
   it 'runs every 24 hours' do

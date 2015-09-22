@@ -11,8 +11,7 @@ describe 'Circle CI job' do
   end
 
   def job
-    SCHEDULER.jobs.values.
-      select { |job| job.block.to_s.include?('circle_ci') }.first
+    job_matching('circle_ci')
   end
 
   it 'runs every 5 minutes' do

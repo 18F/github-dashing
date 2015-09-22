@@ -11,8 +11,7 @@ describe 'Active Circle CI Repos' do
   end
 
   def job
-    SCHEDULER.jobs.values.
-      select { |job| job.block.to_s.include?('active_circle_repos') }.first
+    circle_repos_job
   end
 
   it 'runs every 24 hours' do
